@@ -1,0 +1,266 @@
+// File: proj1.cpp
+// Project: 1
+// Name: Alex Leger
+// Date: 2/16/17
+// Section: 05 (Lab)/01 (Lecture)
+// Email: cleger1@umbc.edu
+// Description: Manhunt! A simulator designed to allow people to search an area for a person.
+// Built in array usage and management of input to allow people to do certain things.
+
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+// Global constants
+// Length and Width of the maze
+const int LENGTH = 10;
+const int WIDTH = 10;
+
+//--------
+// Function: getInput(output, min, max)
+// Precondition: A string to output and a min/max value to calibrate input.
+// Postcondition: Returns an integer between the boundaries.
+//--------
+int getInput(string output, int min, int max);
+
+//--------
+// Function: playGame(maze, coordinates, target) 
+// Precondition: A maze that has been initalized and coordinates of the target and the player.
+// Postcondition: none.
+//--------
+void playGame(char maze[LENGTH][WIDTH], int playerCoordinates[2], int targetCoordinates[2]);
+
+//--------
+// Function: generateMaze(maze, coordinates, target)
+// Precondition: A maze that has been initialized and coordinates of the target and the player.
+// Postcondition: A maze that is now loaded with the player, the target and unmarked spaces
+// which will be used as the game continues.
+//--------
+void generateMaze(char maze[LENGTH][WIDTH], int playerCoordinates[2], int targetCoordinates[2]);
+
+//--------
+// Function: searchSpot(maze, targetCoordinates, spaceCoordinates) 
+// Precondition: The player is in a spot adjacent to the piece and the spot searched exists in the array.
+// Postcondition: Returns either true (found target) or false (did not find target.) Will move investigator
+// to the new spot if false.
+//--------
+boolean searchSpot(char maze[LENGTH][WIDTH], int targetCoordinates[2], int spaceCoordinates[2]);
+
+//--------
+// Function: move(maze, playerCoordinates, newCoordinates)
+// Precondition: An initalized maze, and the playerCoordinates must already be in bounds.
+// Postcondition: Returns either true (if the spot is able to be moved to) and will move the player, or
+// returns false if the spot is not within boundaries.
+//--------
+boolean move(char maze[LENGTH][WIDTH], int playerCoordinates[2], int newCoordinates[2]);
+
+//--------
+// Function: printMaze(char[][] maze)
+// Precondition: A maze that has been initialized.
+// Postcondition: A printout of the maze.
+//--------
+void printMaze(char maze[LENGTH][WIDTH]);
+
+int main() {
+  
+  cout << "Welcome to the Manhunt simulation!" << endl;
+  cout << "Your objective is to find a person in an area." << endl;
+  
+  const int startOptions = 3;
+  cout << endl << "What would you like to do?" << endl;
+  cout << "1. Load a game from file" << endl;
+  cout << "2. Start a new game" << endl;
+  cout << "3. Exit" << endl;
+  int input = 0;
+  
+  do {
+    cout << "Enter a number, between 1 and " << startOptions << ": " << endl;
+    cin >> input;
+  } while (input < 1 or input > startOptions);
+
+  char maze[10][10];
+  int playerCoordinates[2] = {0,0};
+  int targetCoordinates[2] = {0,0};
+  switch (input) {
+  case 1: {
+    // Load file
+    const string fName = "proj1.txt";
+    ifstream istream;
+    istream.open(fName);
+    
+    // These may need to be switched.
+    istream >> playerCoordinates[1];
+    istream >> playerCoordinates[0];
+    istream >> targetCoordinates[1];
+    istream >> targetCoordinates[0];
+    
+    istream.close();
+
+    playGame(maze, playerCoordinates, targetCoordinates);
+    
+    break;
+  }
+  case 2: {
+    // Start a new game
+    cout << "New game setting selected." << endl;
+    cout << "Initalizing data..." << endl << endl;
+
+    // These may need to be switched, depending on the output of the game.
+    playerCoordinates[1] = getInput("Enter the starting x of the player.", 1, WIDTH) - 1;
+    playerCoordinates[0] = getInput("Enter the starting y of the player.", 1, LENGTH) - 1;
+    
+    targetCoordinates[1] = getInput("Enter the starting x of the target.", 1, WIDTH) - 1;
+    targetCoordinates[0] = getInput("Enter the starting y of the target.", 1, LENGTH) - 1;
+    
+    playGame(maze, playerCoordinates, targetCoordinates); 
+
+    break;
+  }
+  case 3: {
+    // Exit
+    cout << "Well that was quick." << endl;
+    cout << "Shutting down program..." << endl;
+    return 0;
+  }
+  default: {
+    // Something broke.
+    cout << "Something didn't work here." << endl;
+    cout << "You inputted: " << input << endl;
+    return 0;
+  }
+  }
+
+  return 0;
+}
+
+// getInput
+// Forcibly returns an integer value from the user within boundaries.
+int getInput(string output, int min, int max) {
+  int input = min - 1;
+  int cycles = 0;
+  do {
+    if (cycles > 0) {
+      cout << "Make sure your value is between " << min << " and " << max << "." << endl;
+    }
+    cout << output;
+    cin >> input;
+    cycles++;
+  } while (input < min or input > max);
+  return input;
+
+}
+
+// playGame
+// The main function that runs while the game is running.
+void playGame(char maze[LENGTH][WIDTH], int playerCoordinates[2], int targetCoordinates[2]) {
+  cout << "Initalizing simulation..." << endl;
+  generateMaze(maze, playerCoordinates, targetCoordinates);
+  do {
+    printMaze(maze);
+    cout << "You may either make a move, view map, or exit." << endl;
+    cout << "Select your option." << endl;
+    cout << "1. Move North" << endl;
+    cout << "2. Move South" << endl;
+    cout << "3. Move West" << endl;
+    cout << "4. Move East" << endl;
+    cout << "5. View Map" << endl;
+    cout << "6. Exit" << endl;
+    int input = 0;
+    const int numOptions = 6;
+    do {
+      cout << "Enter a value between 1 and " << numOptions << ": " << endl;
+      cin >> input;
+    } while (input < 1 or input > numOptions);
+
+    switch (input) {
+    case 1: {
+      // Move North
+      break;
+    }
+    case 2: {
+      // Move South
+      break;
+    }
+    case 3: {
+      // Move West
+      break;
+    }
+    case 4: {
+      // Move East
+      break;
+    }
+    case 5: {
+      // View Map
+      printMaze(maze);
+      break;
+    }
+    case 6: {
+      // Exit
+      break;
+    }
+    } // End Switch
+
+
+  } while (input != 6);
+
+  return;
+
+}
+
+// generateMaze
+// The initial function to build the maze.
+void generateMaze(char maze[LENGTH][WIDTH], int playerCoordinates[2], int targetCoordinates[2]) {
+  for (int l = 0; l < LENGTH; l++) {
+    for (int w = 0; w < WIDTH; w++) {
+      if (w == playerCoordinates[1] and l == playerCoordinates[0]) {
+	maze[l][w] = 'I';
+      } else if (w == targetCoordinates[1] and l == targetCoordinates[0]) {
+	maze[l][w] = 'T';
+      } else {
+	maze[l][w] = '_';
+      }
+    }
+  }
+  return;
+}
+
+// move
+// Returns true (and moves the player) or false if the point is out of bounds.
+boolean move(char maze[LENGTH][WIDTH], int playerCoordinates[2], int newCoordinates[2]) {
+  // True if new coordinates are in bounds, false otherwise
+  boolean inBounds = (newCoordinates[0] > 0 and newCoordinates[0] < LENGTH and newCoordinates[1] > 0 and newCoordinates[1] < WIDTH);
+
+  // If the movement is in bounds then move and return true, or return false otherwise
+  if (inBounds) {
+    maze[playerCoordinates[0]][playerCoordinates[1]] = '*';
+    maze[newCoordinates[0]][newCoordinates[1]] = 'I';
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// searchSpot 
+// Searches a space. Return true if target or false otherwise.
+boolean searchSpot(char maze[LENGTH][WIDTH], int targetCoordinates[2], int spaceCoordinates[2]) {
+  char current = maze[spaceCoordinates[0]][spaceCoordinates[1]];
+  if (current == 'T') {
+    return true;
+  } else {
+    
+    return false;
+  }
+}
+
+// printMaze
+// Print out the maze.
+void printMaze(char maze[LENGTH][WIDTH]) {
+  for (int l = 0; l < LENGTH; l++) {
+    for (int w = 0; w < WIDTH; w++) {
+      cout << maze[l][w] << " ";
+    }
+    cout << endl;
+  } 
+}
