@@ -12,7 +12,7 @@ Project 2 - Exploding Kittens - Code for a text-based variant of the Exploding K
 
 Project 3 - DNA Sequencer - Code for a small-scale version of a DNA sequencing algorithm. Takes in trinucleotides and returns the amino acid variants and counts other versions of it.
 
-### Uses vectors of pointers and allocates memory on the fly using file input in order to create the list of DNA.
+### Uses vectors of pointers and allocates memory on the fly using file input and dynamic memory in order to create the list of DNA.
 
 Project 4 - The Garden - Code that simulates a small scale of a plant garden. Allows you to plant different types of plants and simulate a month time to see how the plants are faring after a certain amount of time.
 
