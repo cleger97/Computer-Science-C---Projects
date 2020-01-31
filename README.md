@@ -1,6 +1,7 @@
 # Computer Science C++ Projects
 
-C++ projects for Computer Science classes.
+C++ projects for Computer Science classes. 
+UPDATE 2020: Can't really upload a lot of them, would be violating several academic policies.
 
 Project 1 - Manhunt - Miniature maze finder game. Input the coordinates of both the target and the start of the player then you attempt to find the target. 
 
